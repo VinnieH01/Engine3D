@@ -26,9 +26,9 @@ namespace Engine3D.Rendering
             Array.Clear(bufferData, 0, bufferData.Length);
         }
 
-        public void SetPixel(uint x, uint y, Color color)
+        public void SetPixel(int x, int y, uint color)
         {
-            bufferData[Width * y + x] = color;
+            bufferData[Width * y + x] = new Color(color);
         }
 
         public void Draw(SpriteBatch batch)

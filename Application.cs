@@ -44,8 +44,8 @@ namespace Engine3D
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            buffer.Clear();
-            engine.Draw(buffer);
+            //buffer.Clear();
+            engine.Draw(buffer, (float)gameTime.ElapsedGameTime.TotalSeconds);
 
             batch.Begin(SpriteSortMode.Deferred, BlendState.Opaque);
             buffer.Draw(batch);
