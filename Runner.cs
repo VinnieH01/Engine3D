@@ -7,8 +7,8 @@ namespace Engine3D
         [STAThread]
         static void Main()
         {
-            using (var game = new Application())
-                game.Run();
+            using var game = new Application();
+            game.Run();
         }
     }
 }

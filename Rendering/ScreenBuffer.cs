@@ -4,12 +4,12 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Engine3D
+namespace Engine3D.Rendering
 {
     class ScreenBuffer
     {
-        private Color[] bufferData;
-        private Texture2D buffer;
+        private readonly Color[] bufferData;
+        private readonly Texture2D buffer;
         public int Width { get; private set; }
         public int Height { get; private set; }
 
