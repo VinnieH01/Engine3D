@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System.Diagnostics;
 using Engine3D.Rendering;
 
 namespace Engine3D
@@ -16,6 +15,8 @@ namespace Engine3D
         {
             graphics = new GraphicsDeviceManager(this);
             IsMouseVisible = true;
+            IsFixedTimeStep = false;
+            graphics.SynchronizeWithVerticalRetrace = false;
         }
 
         protected override void Initialize()
@@ -24,15 +25,17 @@ namespace Engine3D
             graphics.PreferredBackBufferHeight = 500;
             graphics.ApplyChanges();
 
-            engine = new Engine();
-
             base.Initialize();
         }
 
         protected override void LoadContent()
         {
             batch = new SpriteBatch(GraphicsDevice);
-            buffer = new ScreenBuffer(GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height, GraphicsDevice);
+            buffer = new ScreenBuffer(500, 500, GraphicsDevice);
+
+            TextureLoader.Init(GraphicsDevice);
+
+            engine = new Engine();
         }
 
         protected override void Update(GameTime gameTime)
@@ -42,13 +45,11 @@ namespace Engine3D
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
-
-            //buffer.Clear();
+            buffer.Clear();
             engine.Draw(buffer, (float)gameTime.ElapsedGameTime.TotalSeconds);
 
-            batch.Begin(SpriteSortMode.Deferred, BlendState.Opaque);
-            buffer.Draw(batch);
+            batch.Begin(SpriteSortMode.Deferred, BlendState.Opaque, SamplerState.PointClamp);
+            buffer.Draw(batch, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
             batch.End();
 
             base.Draw(gameTime);

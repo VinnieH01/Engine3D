@@ -1,18 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Engine3D.Math;
+using System;
 
 namespace Engine3D.Rendering
 {
-    class Projector
+    public class Camera
     {
         private readonly float width;
         private readonly float fov;
+        public Vector3 Direction {get; private set;}
 
-        public Projector(float width, float fov)
+        public Camera(float width, float fov)
         {
             this.width = width;
             this.fov = fov;
+            Direction = new Vector3(0, 0, 1);
         }
 
         public ScreenPoint Project(Vertex vertex)

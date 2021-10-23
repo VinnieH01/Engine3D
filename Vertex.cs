@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Engine3D
 {
-    class Vertex
+    public struct Vertex
     {
         public Vector3 Position { get; private set; }
         public Vector2 UV { get; private set; }
@@ -26,12 +26,6 @@ namespace Engine3D
         {
             Position = new Vector3(x, y, z);
             UV = new Vector2(u, v);
-        }
-
-        public Vertex(Vertex other)
-        {
-            Position = other.Position;
-            UV = other.UV;
         }
 
         public Vertex Rotated(Vector3 rotation)

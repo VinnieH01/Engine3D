@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Engine3D.Math
 {
-    struct Vector2
+    public struct Vector2
     {
         public float X { get; set; }
         public float Y { get; set; }

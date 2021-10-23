@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Engine3D.Rendering
 {
-    class ScreenBuffer
+    public class ScreenBuffer
     {
         private readonly Color[] bufferData;
         private readonly Texture2D buffer;
@@ -28,13 +28,15 @@ namespace Engine3D.Rendering
 
         public void SetPixel(int x, int y, uint color)
         {
-            bufferData[Width * y + x] = new Color(color);
+            int index = Width * y + x;
+            if (index >= bufferData.Length || index < 0) return;
+            bufferData[index] = new Color(color);
         }
 
-        public void Draw(SpriteBatch batch)
+        public void Draw(SpriteBatch batch, int width, int height)
         {
             buffer.SetData(bufferData);
-            batch.Draw(buffer, new Rectangle(0, 0, Width, Height), Color.White);
+            batch.Draw(buffer, new Rectangle(0, 0, width, height), Color.White);
         }
 
 
