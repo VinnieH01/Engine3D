@@ -7,13 +7,13 @@ namespace Engine3D.Rendering
     {
         private readonly float width;
         private readonly float fov;
-        public Vector3 Direction {get; private set;}
+        public Vector3 Rotation { get; set; }
+        public Vector3 Position { get; set; }
 
         public Camera(float width, float fov)
         {
             this.width = width;
             this.fov = fov;
-            Direction = new Vector3(0, 0, 1);
         }
 
         public ScreenPoint Project(Vertex vertex)

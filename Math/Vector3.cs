@@ -32,6 +32,9 @@ namespace Engine3D.Math
         public static Vector3 operator -(Vector3 a, Vector3 b)
             => new Vector3(a.X - b.X, a.Y - b.Y, a.Z - b.Z);
 
+        public static Vector3 operator -(Vector3 a)
+            => new Vector3(-a.X, -a.Y, -a.Z);
+
         public Vector3 Cross(Vector3 other)
             => new Vector3(Y * other.Z - Z * other.Y, Z * other.X - X * other.Z, X * other.Y - Y * other.X);
 

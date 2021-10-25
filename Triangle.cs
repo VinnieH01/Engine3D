@@ -30,7 +30,7 @@ namespace Engine3D
             Texture = texture;
         }
 
-        public (Vertex[], Texture) CalculateGlobalVerticies()
+        public (Vertex[], Texture) CalculateGlobalVertices()
         {
             Vertex[] vertices = new Vertex[Vertices.Length];
             for (int i = 0; i < Vertices.Length; i++)

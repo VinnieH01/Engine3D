@@ -42,11 +42,12 @@ namespace Engine3D
         public void Draw(ScreenBuffer buffer, float deltaTime)
         {
             Console.WriteLine(1.0f / deltaTime);
-            angle += 80 * deltaTime;
+            angle += 20 * deltaTime;
             foreach (Triangle t in triangles)
             {
                 t.Position = new Vector3(0, 0, 800);
-                t.Rotation = new Vector3(angle * 0.5f, angle, angle * 0.2f);
+                //t.Rotation = new Vector3(angle * 0.5f, angle, angle * 0.2f);
+                camera.Position = new Vector3(angle, 0, 0);
             }
             rasterizer.Draw(triangles, buffer, camera);
         }

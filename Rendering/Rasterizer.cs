@@ -14,35 +14,51 @@ namespace Engine3D.Rendering
         /// <param name="camera">The camera to use for projecting the triangles to the screen</param>
         public void Draw(List<Triangle> triangles, ScreenBuffer buffer, Camera camera)
         {
-            List<(Vertex[], Texture)> globalTriangles = new List<(Vertex[], Texture)>();
+            List<(Vertex[], Texture)> viewTriangles = new List<(Vertex[], Texture)>();
 
             foreach(Triangle triangle in triangles)
             {
-                (Vertex[] vertices, Texture) globalTriangle = triangle.CalculateGlobalVerticies();
+                (Vertex[] globalVertices, Texture texture) = triangle.CalculateGlobalVertices();
 
-                Vector3 u = globalTriangle.vertices[1].Position - globalTriangle.vertices[0].Position;
-                Vector3 v = globalTriangle.vertices[2].Position - globalTriangle.vertices[0].Position;
+                Vertex[] viewVertices = CalculateViewVertices(globalVertices, camera);
 
-                Vector3 normal = u.Cross(v);
+                Vector3 u = viewVertices[1].Position - viewVertices[0].Position;
+                Vector3 v = viewVertices[2].Position - viewVertices[0].Position;
 
-                //If the triangle is facing away from the camera we dont want to draw it
-                if (normal.Dot(camera.Direction) >= 0) continue;
+                //Normal in view space (not the true normal of the object so cannot be used for lighting and such, only for culling)
+                Vector3 viewNormal = u.Cross(v);
 
-                globalTriangles.Add(globalTriangle);
+                //Ray from camera (0, 0, 0) in world space to the normal
+                Vector3 cameraDirection = viewVertices[0].Position - new Vector3(0, 0, 0);
+
+                //If the triangle is facing away from the camera we dont care about it
+                if (viewNormal.Dot(cameraDirection) >= 0) continue;
+
+                viewTriangles.Add((viewVertices, texture));
             }
 
             //Sort the triangles so that ones further away are drawn first
-            globalTriangles.Sort(((Vertex[] vertices, Texture) a, (Vertex[] vertices, Texture) b) => {
+            viewTriangles.Sort(((Vertex[] vertices, Texture) a, (Vertex[] vertices, Texture) b) => {
                 float aAverageZ = (a.vertices[0].Position.Z + a.vertices[1].Position.Z + a.vertices[2].Position.Z) / 3.0f;
                 float bAverageZ = (b.vertices[0].Position.Z + b.vertices[1].Position.Z + b.vertices[2].Position.Z) / 3.0f;
                 return aAverageZ > bAverageZ ? -1 : aAverageZ > bAverageZ ? 1 : 0; 
             });
 
-            foreach ((Vertex[] vertices, Texture texture) in globalTriangles)
+            foreach ((Vertex[] vertices, Texture texture) in viewTriangles)
             {
                 ScreenPoint[] screenPoints = ProjectTriangleTo2D(vertices, camera, buffer);
                 DrawTriangle(screenPoints, texture, buffer);
             }
+        }
+
+        public Vertex[] CalculateViewVertices(Vertex[] vertices, Camera camera)
+        {
+            for (int i = 0; i < vertices.Length; i++)
+            {
+                vertices[i] = vertices[i].Rotated(-camera.Rotation).Translated(-camera.Position);
+            }
+
+            return vertices;
         }
 
         private static ScreenPoint[] ProjectTriangleTo2D(Vertex[] vertices, Camera camera, ScreenBuffer buffer)
