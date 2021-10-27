@@ -19,5 +19,20 @@ namespace Engine3D.Math
 
         public static Vector2 operator /(Vector2 vector, float denom)
             => new Vector2(vector.X / denom, vector.Y / denom);
+
+        public static Vector2 operator *(Vector2 vector, int factor)
+           => new Vector2(vector.X * factor, vector.Y * factor);
+
+        public static Vector2 operator *(int factor, Vector2 vector)
+           => vector * factor;
+
+        public static Vector2 operator /(Vector2 a, Vector2 b)
+           => new Vector2(a.X / b.X, a.Y / b.Y);
+
+        public static Vector2 operator -(Vector2 a, Vector2 b)
+            => new Vector2(a.X - b.X, a.Y - b.Y);
+
+        public static Vector2 operator +(Vector2 a, Vector2 b)
+            => new Vector2(a.X + b.X, a.Y + b.Y);
     }
 }

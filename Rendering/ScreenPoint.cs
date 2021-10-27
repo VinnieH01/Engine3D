@@ -1,4 +1,5 @@
 ﻿using Engine3D.Math;
+using System;
 
 namespace Engine3D.Rendering
 {
@@ -59,5 +60,10 @@ namespace Engine3D.Rendering
 
         public ScreenPoint(ScreenPoint other)
             : this(other.X, other.Y, other.Z, other.UV) { }
+
+        public float DistanceTo(ScreenPoint other)
+        {
+            return MathF.Sqrt((X - other.X) * (X - other.X) + (Y - other.Y) * (Y - other.Y));
+        }
     }
 }

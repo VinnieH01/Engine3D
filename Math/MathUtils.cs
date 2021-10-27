@@ -34,5 +34,10 @@ namespace Engine3D.Math
             return new ScreenPoint((int)Lerp(from.X, to.X, t), (int)Lerp(from.Y, to.Y, t), Lerp(from.Z, to.Z, t),
                 Lerp(from.UV, to.UV, t), Lerp(from.UVoverZ, to.UVoverZ, t), Lerp(from.ZInv, to.ZInv, t));
         }
+
+        public static Vertex Lerp(Vertex from, Vertex to, float t)
+        {
+            return new Vertex(Lerp(from.Position, to.Position, t), Lerp(from.UV, to.UV, t));
+        }
     }
 }

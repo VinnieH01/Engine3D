@@ -28,9 +28,7 @@ namespace Engine3D.Rendering
 
         public void SetPixel(int x, int y, uint color)
         {
-            int index = Width * y + x;
-            if (index >= bufferData.Length || index < 0) return;
-            bufferData[index] = new Color(color);
+            bufferData[Width * y + x] = new Color(color);
         }
 
         public void Draw(SpriteBatch batch, int width, int height)

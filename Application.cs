@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Engine3D.Rendering;
+using Microsoft.Xna.Framework.Input;
 
 namespace Engine3D
 {
@@ -8,7 +9,8 @@ namespace Engine3D
     {
         private readonly GraphicsDeviceManager graphics;
         private SpriteBatch batch;
-        private ScreenBuffer buffer;
+        private ScreenBuffer drawBuffer;
+        private DepthBuffer depthBuffer;
         private Engine engine;
 
         public Application()
@@ -21,8 +23,8 @@ namespace Engine3D
 
         protected override void Initialize()
         {
-            graphics.PreferredBackBufferWidth = 500;
-            graphics.PreferredBackBufferHeight = 500;
+            graphics.PreferredBackBufferWidth = 750;
+            graphics.PreferredBackBufferHeight = 750;
             graphics.ApplyChanges();
 
             base.Initialize();
@@ -31,7 +33,8 @@ namespace Engine3D
         protected override void LoadContent()
         {
             batch = new SpriteBatch(GraphicsDevice);
-            buffer = new ScreenBuffer(500, 500, GraphicsDevice);
+            drawBuffer = new ScreenBuffer(250, 250, GraphicsDevice);
+            depthBuffer = new DepthBuffer(drawBuffer.Width, drawBuffer.Height);
 
             TextureLoader.Init(GraphicsDevice);
 
@@ -40,16 +43,21 @@ namespace Engine3D
 
         protected override void Update(GameTime gameTime)
         {
+            if (Keyboard.GetState().IsKeyDown(Keys.Escape)) Exit();
+
+            Input.Update();
+
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
-            buffer.Clear();
-            engine.Draw(buffer, (float)gameTime.ElapsedGameTime.TotalSeconds);
+            drawBuffer.Clear();
+            depthBuffer.Clear();
+            engine.Draw(drawBuffer, depthBuffer, (float)gameTime.ElapsedGameTime.TotalSeconds);
 
             batch.Begin(SpriteSortMode.Deferred, BlendState.Opaque, SamplerState.PointClamp);
-            buffer.Draw(batch, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
+            drawBuffer.Draw(batch, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
             batch.End();
 
             base.Draw(gameTime);
